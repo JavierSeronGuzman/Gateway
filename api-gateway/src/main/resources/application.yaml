@@ -5,11 +5,11 @@ spring:
         - id: auth-route
           uri: http://localhost:8081
           predicates:
-            - Path=/auth/**
+            - Path=/v1/auth/**
         - id: game-route
           uri: http://localhost:8080
           predicates:
-            - Path=/games/**
+            - Path=/v1/games/**
           filters:
             - AuthenticationFilter
   endpoints:

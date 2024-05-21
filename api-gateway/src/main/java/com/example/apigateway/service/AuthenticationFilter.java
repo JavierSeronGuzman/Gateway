@@ -16,7 +16,7 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     private final JwtUtils jwtUtils;
 
     public AuthenticationFilter(RouterValidator validator, JwtUtils jwtUtils) {
-        super(Config.class);  // Asegúrate de llamar al constructor de la clase base con el tipo Config
+        super(Config.class);
         this.validator = validator;
         this.jwtUtils = jwtUtils;
     }
@@ -25,14 +25,14 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
     public GatewayFilter apply(Config config) {
         return (exchange, chain) -> {
             var request = exchange.getRequest();
-
             ServerHttpRequest serverHttpRequest = request;
+
             if (validator.isSecured.test(request)) {
-                if (authMissing(request)){
+                if (authMissing(request)) {
                     return onError(exchange, HttpStatus.UNAUTHORIZED);
                 }
-                String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
 
+                String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {
                     authHeader = authHeader.substring(7);
                 } else {
@@ -43,10 +43,10 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
                     return onError(exchange, HttpStatus.UNAUTHORIZED);
                 }
 
-                serverHttpRequest = request.mutate()
-                        .header("userIdRequest", jwtUtils.extractUserId(authHeader).toString())
-                        .build();
+                String userId = jwtUtils.extractUserId(authHeader).toString();
+                serverHttpRequest = request.mutate().header("userIdRequest", userId).build();
             }
+
             return chain.filter(exchange.mutate().request(serverHttpRequest).build());
         };
     }
@@ -65,3 +65,4 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
         // Config fields if needed
     }
 }
+
