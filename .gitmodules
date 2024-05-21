@@ -1,6 +1,0 @@
-[submodule "Auth1"]
-	path = Auth1
-	url = https://github.com/JavierSeronGuzman/Auth.git
-[submodule "game-service1"]
-	path = game-service1
-	url = https://github.com/JavierSeronGuzman/game-service.git
