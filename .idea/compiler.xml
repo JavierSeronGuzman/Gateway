@@ -8,8 +8,8 @@
         <outputRelativeToContentRoot value="true" />
         <module name="api-gateway" />
         <module name="game-service-api" />
-        <module name="auth" />
         <module name="api-users" />
+        <module name="auth" />
       </profile>
     </annotationProcessing>
   </component>
