@@ -30,20 +30,27 @@ public class AuthenticationFilter extends AbstractGatewayFilterFactory<Authentic
             if (validator.isSecured.test(request)) {
                 if (authMissing(request)) {
                     return onError(exchange, HttpStatus.UNAUTHORIZED);
+
                 }
 
                 String authHeader = request.getHeaders().getFirst(HttpHeaders.AUTHORIZATION);
+                System.out.println(authHeader);
                 if (authHeader != null && authHeader.startsWith("Bearer ")) {
                     authHeader = authHeader.substring(7);
+                    System.out.println(authHeader);
+                    System.out.println("holaxd");
                 } else {
+                    System.out.println("holaa");
                     return onError(exchange, HttpStatus.UNAUTHORIZED);
                 }
 
                 if (jwtUtils.isExpired(authHeader)) {
+                    System.out.println("holaaa");
                     return onError(exchange, HttpStatus.UNAUTHORIZED);
                 }
 
                 String userId = jwtUtils.extractUserId(authHeader).toString();
+                System.out.println(userId);
                 serverHttpRequest = request.mutate().header("userIdRequest", userId).build();
             }
 

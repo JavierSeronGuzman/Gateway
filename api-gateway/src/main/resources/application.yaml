@@ -6,6 +6,12 @@ spring:
           uri: http://localhost:8081
           predicates:
             - Path=/v1/auth/**
+        - id: user-route
+          uri: http://localhost:8083
+          predicates:
+            - Path=/v1/users/**
+          filters:
+            - AuthenticationFilter
         - id: game-route
           uri: http://localhost:8080
           predicates:
